@@ -7,7 +7,9 @@ from pygame.locals import (
     K_ESCAPE,
     KEYDOWN,
     QUIT
+    
 )
+from pygame.math import Vector2
 pygame.init()
 
 #COLORS
@@ -19,24 +21,36 @@ GREEN = (0,255,0)
 BLUE = (0,0,255)
 
 WIDTH, HEIGHT = 400, 600
+WIN = pygame.display.set_mode((WIDTH, HEIGHT))
+class Player:
+    def __init__(self) -> None:
+        self.position = Vector2.xy
 
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-running = True
-FPS = 60
+def draw_window():
+    WIN.fill(WHITE)
+    
+    pygame.display.update()
+
 #Game Loop
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type == KEYDOWN:
-            if event.key == K_ESCAPE:
+def main():
+    clock = pygame.time.Clock()
+    pygame.display.set_caption("Dont touch spikes!")
+    FPS = 60
+    running = True
+    while running:
+        clock.tick(FPS)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
                 running = False
-    
-    screen.fill(WHITE)
+            elif event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    running = False
+        
+        
 
-    pygame.draw.circle(screen, BLUE, (200,300), 75)
+        draw_window()
 
-    pygame.display.flip()
+    pygame.quit()
 
-pygame.quit()
-    
+if __name__ == '__main__':
+    main()
