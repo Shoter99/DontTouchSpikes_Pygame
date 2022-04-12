@@ -100,20 +100,22 @@ class Bird:
         # new_rect = rotated_img.get_rect(center=self.img.get_rect(topleft = (self.x, self.y)).center)
         
         win.blit(self.img, (self.x, self.y))
-    
     def get_mask(self):
         return pygame.mask.from_surface(self.img)
     def get_dir(self):
         return self.dir
     def get_rect(self):
-        return pygame.Rect(self.x,self.y, 15,15)
+        return pygame.Rect(self.x+20,self.y+20, 25,25)
+
+
 class Spike:
-    def __init__(self, x,y, rot=1):
+    def __init__(self, x,y, rot=1, offset=0):
         self.x = x
         self.y = y
         self.rotation = rot
         self.img = SPIKE_SURFACE
         self.rotate()
+        self.offset = offset
     def rotate(self):
         if self.rotation:
             self.img = pygame.transform.rotate(self.img, -90)
@@ -122,7 +124,7 @@ class Spike:
     def draw(self, win):
         win.blit(self.img, (self.x, self.y))
     def get_rect(self):
-        return pygame.Rect(self.x, self.y, 10,25)
+        return pygame.Rect(self.x+self.offset, self.y+5, 25,20)
 
 
 def draw_window(win, bird,spikes):
@@ -146,9 +148,9 @@ def generate_right_side_spikes():
     spike_free_area = random.randint(0, HEIGHT-192)
     spikes = []
     for i in range(0,spike_free_area, 32):
-        spikes.append(Spike(WIDTH-32,i,0))
+        spikes.append(Spike(WIDTH-32,i,0,8))
     for i in range(spike_free_area+160,HEIGHT,32):
-        spikes.append(Spike(WIDTH-32,i,0))
+        spikes.append(Spike(WIDTH-32,i,0,8))
     return spikes
 #Game Loop
 def main():
@@ -185,8 +187,10 @@ def main():
         for spike in spikes:
             rect1 = spike.get_rect()
             rect2 = bird.get_rect()
-            pygame.draw.rect(screen, (255,255,255), rect1)
-            pygame.draw.rect(screen, (255,255,255), rect2)
+            # Drawing collision
+            # pygame.draw.rect(screen, (0,0,0), rect1)
+            # pygame.draw.rect(screen, (0,0,0), rect2)
+            # pygame.display.update()
             if rect1.colliderect(rect2):
                 round_start = False
                 bird.x = 160
