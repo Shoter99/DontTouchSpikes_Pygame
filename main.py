@@ -62,7 +62,7 @@ class Bird:
         elif self.x < 0 :
             self.dir = -1
         
-        velx = self.vel/2 * self.dir
+        velx = self.vel/1.5 * self.dir
         
         self.x += velx
 
@@ -105,6 +105,8 @@ class Bird:
         return pygame.mask.from_surface(self.img)
     def get_dir(self):
         return self.dir
+    def get_rect(self):
+        return pygame.Rect(self.x,self.y, 15,15)
 class Spike:
     def __init__(self, x,y, rot=1):
         self.x = x
@@ -119,6 +121,8 @@ class Spike:
             self.img = pygame.transform.rotate(self.img, 90)
     def draw(self, win):
         win.blit(self.img, (self.x, self.y))
+    def get_rect(self):
+        return pygame.Rect(self.x, self.y, 10,25)
 
 
 def draw_window(win, bird,spikes):
@@ -135,7 +139,7 @@ def generate_left_side_spikes():
     spikes = []
     for i in range(0,spike_free_area, 32):
         spikes.append(Spike(0,i))
-    for i in range(spike_free_area+192,HEIGHT,32):
+    for i in range(spike_free_area+160,HEIGHT,32):
         spikes.append(Spike(0,i))
     return spikes
 def generate_right_side_spikes():
@@ -143,7 +147,7 @@ def generate_right_side_spikes():
     spikes = []
     for i in range(0,spike_free_area, 32):
         spikes.append(Spike(WIDTH-32,i,0))
-    for i in range(spike_free_area+192,HEIGHT,32):
+    for i in range(spike_free_area+160,HEIGHT,32):
         spikes.append(Spike(WIDTH-32,i,0))
     return spikes
 #Game Loop
@@ -165,10 +169,10 @@ def main():
                 if event.key == K_ESCAPE:
                     running = False
                 if event.key == pygame.K_SPACE:
+                    if round_start:
+                        bird.jump()
                     if not round_start:
-                        generate_left_side_spikes()
                         round_start = True
-                    bird.jump()
         if round_start:
             bird.move()
         if dir != bird.get_dir():
@@ -178,6 +182,18 @@ def main():
                 spikes = generate_left_side_spikes()
             dir = bird.get_dir()
         draw_window(screen, bird, spikes)
+        for spike in spikes:
+            rect1 = spike.get_rect()
+            rect2 = bird.get_rect()
+            pygame.draw.rect(screen, (255,255,255), rect1)
+            pygame.draw.rect(screen, (255,255,255), rect2)
+            if rect1.colliderect(rect2):
+                round_start = False
+                bird.x = 160
+                bird.y = 250
+                bird.dir = 1
+                spikes = generate_left_side_spikes()
+        
 
     pygame.quit()
 
