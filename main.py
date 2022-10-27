@@ -29,11 +29,6 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 SKY_SURFACE = pygame.image.load(os.path.join('Assets', 'bg.png'))
 SKY_SURFACE = pygame.transform.scale(SKY_SURFACE, (WIDTH, HEIGHT))
 
-BIRD_SURFACES = [
-    pygame.image.load(os.path.join('Assets', 'bird2.png')),
-    pygame.image.load(os.path.join('Assets', 'bird1.png')),
-    pygame.image.load(os.path.join('Assets', 'bird3.png'))
-    ]
 
 
 

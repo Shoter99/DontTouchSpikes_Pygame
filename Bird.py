@@ -1,3 +1,12 @@
+import pygame
+import os
+
+BIRD_SURFACES = [
+    pygame.image.load(os.path.join('Assets', 'bird2.png')),
+    pygame.image.load(os.path.join('Assets', 'bird1.png')),
+    pygame.image.load(os.path.join('Assets', 'bird3.png'))
+    ]
+
 class Bird:
     IMGS = BIRD_SURFACES
     MAX_ROTATION = 25
