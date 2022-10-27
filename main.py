@@ -1,3 +1,4 @@
+from email.mime import image
 from platform import win32_edition
 import pygame, sys, random, os
 from pygame.locals import (
@@ -114,11 +115,15 @@ class Bird:
     def get_mask(self):
         return pygame.mask.from_surface(self.img)
 
+
 def draw_window(win, bird):
     win.fill(WHITE)
     win.blit(SKY_SURFACE, (0,0))
     bird.draw(win)
     pygame.display.update()
+
+
+
 
 #Game Loop
 def main():
@@ -126,6 +131,7 @@ def main():
     pygame.display.set_caption("Dont touch spikes!")
     FPS = 60
     running = True
+    bird = Bird(200,200)
     while running:
         clock.tick(FPS)
         for event in pygame.event.get():
@@ -134,10 +140,11 @@ def main():
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     running = False
+                if event.key == pygame.K_SPACE:
+                    bird.jump()
         
-        
-
-        draw_window(win, Bird)
+        bird.move()
+        draw_window(screen, bird)
 
     pygame.quit()
 
