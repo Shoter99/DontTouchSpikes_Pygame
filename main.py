@@ -1,6 +1,5 @@
 from platform import win32_edition
 import pygame, sys, random, os
-from Bird import Bird
 from pygame.locals import (
     K_UP,
     K_DOWN,
