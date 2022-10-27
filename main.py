@@ -137,7 +137,7 @@ def main():
         
         
 
-        draw_window()
+        draw_window(win, Bird)
 
     pygame.quit()
 
